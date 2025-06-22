@@ -1,0 +1,577 @@
+<!-- quiz.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dianda – Quiz Aksara Sunda</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Sundanese&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: url('bg.gif') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 20px;
+            color: #222;
+        }
+        .container {
+            position: relative;
+            max-width: 1100px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            padding: 30px 40px 50px;
+            text-align: center;
+            color: #333;
+            border: 2px solid rgba(255,255,255,0.8);
+        }
+        .back-button {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 10px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .back-button:hover { 
+            background: linear-gradient(135deg, #5a6fd8, #6a42a0);
+            transform: translateX(-2px) translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        .header { margin-bottom: 40px; }
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            letter-spacing: 0.06em;
+        }
+        .header p {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #34495e;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        .game-area {
+            background: rgba(255,255,255,0.9);
+            border-radius: 25px;
+            padding: 35px 30px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            backdrop-filter: blur(25px);
+            min-height: 520px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+        .score-area {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .score, .timer, .level {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 12px 26px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            user-select: none;
+            min-width: 100px;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .score-area > div:empty { display: none; }
+        .score-area > div.update { animation: pulse 1s ease forwards; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .message {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 20px 0 30px;
+            padding: 18px 25px;
+            border-radius: 15px;
+            display: none;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            user-select: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            letter-spacing: 0.03em;
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .message.show { display: block; opacity: 1; }
+        .message.success {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .message.info {
+            background: linear-gradient(135deg, #0984e3, #74b9ff);
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .control-buttons {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .control-btn {
+            background: linear-gradient(135deg, #00cec9, #00b894);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(0, 184, 148, 0.4);
+            transition: all 0.3s ease;
+            user-select: none;
+            flex-shrink: 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .control-btn:hover:not(:disabled) {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(0,184,148,0.6);
+        }
+        .control-btn:disabled {
+            background: #95a5a6;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .quiz-area {
+            max-width: 600px;
+            margin: auto;
+        }
+        .question {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .aksara-display {
+            font-size: 92px;
+            font-weight: 900;
+            color: #667eea;
+            font-family: 'Noto Sans Sundanese', sans-serif;
+            margin: 30px 0;
+            text-shadow: 0 3px 8px rgba(0,0,0,0.18);
+            user-select: none;
+        }
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+        .option-btn {
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            color: #2d3436;
+            border: none;
+            padding: 18px 32px;
+            border-radius: 35px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: 700;
+            box-shadow: 0 6px 17px rgba(255, 234, 167, 0.5);
+            transition: all 0.3s ease;
+            min-width: 120px;
+            user-select: none;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 9px 25px rgba(255, 234, 167, 0.7);
+        }
+        .option-btn.correct {
+            background: linear-gradient(135deg, #00b894, #009973);
+            color: white;
+            box-shadow: 0 8px 30px rgba(0, 152, 115, 0.6);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .option-btn.wrong {
+            background: linear-gradient(135deg, #e17055, #d63031);
+            color: white;
+            box-shadow: 0 8px 30px rgba(214, 48, 49, 0.6);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .game-over-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .game-over-modal {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+        .game-over-modal h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .game-over-modal p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .final-score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 20px 0;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .modal-btn {
+            background: linear-gradient(135deg, #00cec9, #00b894);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 184, 148, 0.4);
+        }
+        #game-content p {
+            font-size: 18px; 
+            color: #7f8c8d; 
+            user-select: none;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        @media (max-width: 900px) {
+            .header h1 { font-size: 2.3rem; }
+            .control-buttons { flex-direction: column; gap: 18px; }
+            .control-btn { width: 100%; }
+            .options { gap: 12px; }
+            .option-btn { min-width: 100px; font-size: 18px; padding: 16px 28px; }
+        }
+        @media (max-width: 600px) {
+            .score-area { justify-content: space-around; }
+            .aksara-display { font-size: 72px; }
+            .question { font-size: 24px; }
+        }
+        .top-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .audio-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .audio-btn:hover {
+            background: linear-gradient(135deg, #5a6fd8, #6a42a0);
+        }
+        footer {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 15px 0;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-panel">
+            <button class="back-button" onclick="goBack()">← Kembali</button>
+            <button class="audio-btn" id="audioToggle" onclick="toggleAudio()"><span id="audioIcon">🔊</span></button>
+        </div>
+        <div class="header">
+            <h1>Dianda – Diajar Aksara Sunda</h1>
+            <p>Belajar aksara Sunda dengan cara yang menyenangkan!</p>
+        </div>
+        <div class="game-area" role="region" aria-live="polite" aria-label="Area permainan">
+            <div class="score-area" aria-label="Informasi skor, waktu, dan level">
+                <div class="score" aria-live="polite">Skor: <span id="score">0</span></div>
+                <div class="timer" aria-live="polite">Waktu: <span id="timer">60</span>s</div>
+                <div class="level" aria-live="polite">Level: <span id="level">1</span></div>
+            </div>
+            <div class="message" id="message" role="alert" aria-atomic="true"></div>
+            <div id="game-content" tabindex="0">
+                <p>Tekan "Mulai Permainan" untuk bermain!</p>
+            </div>
+            <div class="control-buttons">
+                <button class="control-btn" onclick="startGame()" aria-label="Mulai permainan">🎮 Mulai Permainan</button>
+                <button class="control-btn" onclick="resetGame()" aria-label="Reset permainan">🔄 Reset</button>
+                <button class="control-btn" onclick="showHint()" aria-label="Tampilkan petunjuk">💡 Petunjuk</button>
+            </div>
+        </div>
+        
+        <div class="game-over-overlay" id="gameOverOverlay">
+            <div class="game-over-modal">
+                <h2>🎉 Quiz Selesai!</h2>
+                <p id="gameOverMessage">Permainan selesai!</p>
+                <div class="final-score" id="finalScore">Skor Akhir: 0</div>
+                <button class="modal-btn" onclick="playAgain()">Main Lagi</button>
+                <button class="modal-btn" onclick="goBack()">Kembali</button>
+            </div>
+        </div>
+    
+        <footer>© Edutech UNNES 2025</footer>
+    </div>
+
+    <script>
+        const sundaneseLetters = [
+            { aksara: 'ᮃ', latin: 'a' },
+            { aksara: 'ᮄ', latin: 'i' },
+            { aksara: 'ᮅ', latin: 'u' },
+            { aksara: 'ᮆ', latin: 'e' },
+            { aksara: 'ᮇ', latin: 'o' },
+            { aksara: 'ᮈ', latin: 'ka' },
+            { aksara: 'ᮌ', latin: 'ga' },
+            { aksara: 'ᮍ', latin: 'nga' },
+            { aksara: 'ᮎ', latin: 'ca' },
+            { aksara: 'ᮏ', latin: 'ja' },
+            { aksara: 'ᮔ', latin: 'nya' },
+            { aksara: 'ᮒ', latin: 'ta' },
+            { aksara: 'ᮓ', latin: 'da' },
+            { aksara: 'ᮔ', latin: 'na' },
+            { aksara: 'ᮕ', latin: 'pa' },
+            { aksara: 'ᮘ', latin: 'ba' },
+            { aksara: 'ᮙ', latin: 'ma' },
+            { aksara: 'ᮚ', latin: 'ya' },
+            { aksara: 'ᮛ', latin: 'ra' },
+            { aksara: 'ᮜ', latin: 'la' }
+        ];
+        const quizQuestions = [
+            { aksara: 'ᮘᮞ', latin: 'basa' },
+            { aksara: 'ᮎᮄ', latin: 'cai' },
+            { aksara: 'ᮞᮛᮨ', latin: 'sare' },
+            { aksara: 'ᮓᮠᮁ', latin: 'dahar' },
+            { aksara: 'ᮃᮃ', latin: 'aa' },
+            { aksara: 'ᮅᮝ', latin: 'uwa' },
+            { aksara: 'ᮘᮞ', latin: 'basa' },
+            { aksara: 'ᮘᮌᮩᮁ', latin: 'bageur' },
+            { aksara: 'ᮞᮥᮔ᮪ᮓ', latin: 'sunda' },
+            { aksara: 'ᮙᮔ', latin: 'mana' }
+        ];
+        let gameState = {
+            score: 0,
+            level: 1,
+            timeLeft: 60,
+            isPlaying: false,
+            currentQuestion: null,
+            timer: null,
+            questionIndex: 0
+        };
+        function goBack() {
+            if (window.history.length > 1) { window.history.back(); }
+            else { window.location.href = 'menu.html'; }
+        }
+        function startGame() {
+            gameState.isPlaying = true;
+            gameState.timeLeft = 60;
+            gameState.score = 0;
+            gameState.questionIndex = 0;
+            updateDisplay();
+            startQuizGame();
+            startTimer();
+            hideMessage();
+        }
+        function startTimer() {
+            if (gameState.timer) clearInterval(gameState.timer);
+            gameState.timer = setInterval(() => {
+                gameState.timeLeft--;
+                updateDisplay();
+                if (gameState.timeLeft <= 0) { endGame('Waktu habis!'); }
+            }, 1000);
+        }
+        function startQuizGame() {
+            gameState.questionIndex = 0;
+            nextQuestion();
+        }
+        function nextQuestion() {
+            if (gameState.questionIndex >= quizQuestions.length) {
+                endGame('Quiz selesai!', true);
+                return;
+            }
+            const current = quizQuestions[gameState.questionIndex];
+            gameState.currentQuestion = current;
+            const options = [current.latin];
+            const others = quizQuestions.map(q => q.latin).filter(l => l !== current.latin);
+            for (let i = 0; i < 2; i++) {
+                const randIndex = Math.floor(Math.random() * others.length);
+                options.push(others[randIndex]);
+                others.splice(randIndex, 1);
+            }
+            options.sort(() => Math.random() - 0.5);
+            const gameContent = document.getElementById('game-content');
+            gameContent.innerHTML = `
+                <div class="quiz-area">
+                    <div class="question">Apa bunyi aksara ini?</div>
+                    <div class="aksara-display" aria-label="Aksara Sunda yang dipertanyakan">${current.aksara}</div>
+                    <div class="options" role="radiogroup" aria-label="Pilihan jawaban">
+                        ${options.map(option =>
+                            `<button class="option-btn" role="radio" aria-checked="false" onclick="selectAnswer('${option}', this)">${option}</button>`
+                        ).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        function selectAnswer(answer, btnClicked) {
+            const buttons = document.querySelectorAll('.option-btn');
+            const correctAnswer = gameState.currentQuestion.latin;
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                btn.setAttribute('aria-checked', 'false');
+                if (btn.textContent === correctAnswer) {
+                    btn.classList.add('correct');
+                    btn.setAttribute('aria-checked', 'true');
+                }
+            });
+            if (answer === correctAnswer) {
+                btnClicked.setAttribute('aria-checked', 'true');
+                gameState.score += 5;
+                showMessage('Benar! +5 poin', 'success');
+                animateScore();
+            } else {
+                btnClicked.classList.add('wrong');
+                btnClicked.setAttribute('aria-checked', 'true');
+                showMessage('Salah! Jawaban yang benar: ' + correctAnswer, 'info');
+            }
+            updateDisplay();
+            gameState.questionIndex++;
+            setTimeout(nextQuestion, 2000);
+        }
+        function animateScore() {
+            const scoreEl = document.getElementById('score');
+            scoreEl.classList.add('update');
+            setTimeout(() => scoreEl.classList.remove('update'), 800);
+        }
+        function showHint() {
+            showMessage('Perhatikan bentuk aksara dengan teliti. Setiap aksara memiliki ciri khas tersendiri!', 'info');
+        }
+        function endGame(message, isComplete = false) {
+            gameState.isPlaying = false;
+            if (gameState.timer) clearInterval(gameState.timer);
+            const overlay = document.getElementById('gameOverOverlay');
+            const modal = overlay.querySelector('.game-over-modal');
+            const gameOverMessage = document.getElementById('gameOverMessage');
+            const finalScore = document.getElementById('finalScore');
+            if (isComplete) {
+                modal.querySelector('h2').textContent = '🎉 Selamat!';
+                gameOverMessage.textContent = 'Anda telah menyelesaikan semua soal!';
+            } else {
+                modal.querySelector('h2').textContent = '⏰ Waktu Habis!';
+                gameOverMessage.textContent = 'Quiz selesai!';
+            }
+            finalScore.textContent = `Skor Akhir: ${gameState.score}`;
+            overlay.style.display = 'flex';
+        }
+        function playAgain() {
+            document.getElementById('gameOverOverlay').style.display = 'none';
+            resetGame();
+            startGame();
+        }
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = `message ${type} show`;
+            setTimeout(hideMessage, 4000);
+        }
+        function hideMessage() {
+            const messageEl = document.getElementById('message');
+            messageEl.classList.remove('show');
+        }
+        function updateDisplay() {
+            document.getElementById('score').textContent = gameState.score;
+            document.getElementById('timer').textContent = gameState.timeLeft;
+            document.getElementById('level').textContent = gameState.level;
+        }
+        function resetGame() {
+            if (gameState.timer) clearInterval(gameState.timer);
+            gameState = {
+                score: 0,
+                level: 1,
+                timeLeft: 60,
+                isPlaying: false,
+                currentQuestion: null,
+                timer: null,
+                questionIndex: 0
+            };
+            const gameContent = document.getElementById('game-content');
+            gameContent.innerHTML = '<p>Tekan "Mulai Permainan" untuk bermain!</p>';
+            updateDisplay();
+            hideMessage();
+            document.getElementById('gameOverOverlay').style.display = 'none';
+        }
+        // Inisialisasi game
+        resetGame();
+        // Audio toggle functionality
+        let isAudioPlaying = false;
+        const bgMusic = document.getElementById('bgMusic');
+        const audioIcon = document.getElementById('audioIcon');
+        function toggleAudio() {
+            if (isAudioPlaying) {
+                bgMusic.pause();
+                audioIcon.textContent = '🔈';
+            } else {
+                bgMusic.play();
+                audioIcon.textContent = '🔊';
+            }
+            isAudioPlaying = !isAudioPlaying;
+        }
+    </script>
+    <!-- Background Music -->
+    <audio id="bgMusic" loop>
+        <source src="sound.mp3" type="audio/mpeg">
+    </audio>
+</body>
+</html>

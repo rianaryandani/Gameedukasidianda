@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Profil Pengembang - Dianda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Sundanese&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans Sundanese', sans-serif;
+            background: url('bggame.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+        .container {
+            position: relative;
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            padding: 30px;
+            text-align: center;
+            color: #222;
+        }
+        .dev-back {
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-weight: 700;
+            color: #222;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #222;
+        }
+        .dev-profiles {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        .profile-card {
+            background: rgba(255,255,255,0.15);
+            border-radius: 15px;
+            padding: 20px;
+            max-width: 300px;
+            text-align: center;
+            color: #222;
+        }
+        .profile-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .profile-card h2 {
+            font-size: 1.5rem;
+            margin: 10px 0 5px;
+        }
+        .profile-card p {
+            font-size: 1rem;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="game.html" class="dev-back">🏠 Beranda</a>
+        <div class="header">
+            <h1>Profil Pengembang</h1>
+        </div>
+        <div class="dev-profiles">
+            <div class="profile-card">
+                <img src="rian.jpg" alt="Foto Rian Aryandani">
+                <h2>Rian Aryandani</h2>
+                <p>Mahasiswa Teknologi Pendidikan, Universitas Negeri Semarang (UNNES), NIM 11022422063.</p>
+            </div>
+            <div class="profile-card">
+                <img src="aqil.jpg" alt="Foto Tsabita Aqil Nurandika">
+                <h2>Tsabita Aqil Nurandika</h2>
+                <p>Mahasiswa Teknologi Pendidikan, Universitas Negeri Semarang (UNNES), NIM 1102422007.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

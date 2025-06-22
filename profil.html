@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Profil Pengembang</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            background: url('bggame.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255,255,255,0.08);
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            padding: 30px 40px 50px;
+            text-align: center;
+            color: white;
+        }
+        .header h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 10px;
+        }
+        .profiles {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        .developer {
+            width: 250px;
+            text-align: center;
+        }
+        .developer img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 4px solid #fff;
+        }
+        .developer h3 {
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+            color: #000000;
+        }
+        .developer p {
+            font-size: 1rem;
+            color: #000000;
+            margin: 2px 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 600px) {
+            .profiles { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Profil Pengembang</h1>
+        </div>
+        <div class="profiles">
+            <div class="developer">
+                <img src="rian.jpg" alt="Rian Aryandani">
+                <h3>Rian Aryandani</h3>
+                <p>Mahasiswa Teknologi Pendidikan</p>
+                <p>NIM: 11022422063</p>
+            </div>
+            <div class="developer">
+                <img src="aqil.jpg" alt="Tsabita Aqil Nurandika">
+                <h3>Tsabita Aqil Nurandika</h3>
+                <p>Mahasiswa Teknologi Pendidikan</p>
+                <p>NIM: 1102422007</p>
+            </div>
+        </div>
+    </div>
+    <footer>© Edutech UNNES 2025</footer>
+</body>
+</html>
